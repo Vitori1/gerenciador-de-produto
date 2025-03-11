@@ -3,7 +3,7 @@ class Produto {
         this.id = 1;
         this.arrayProdutos= [];
     }
-    Adicionar () {
+    Adicionar() {
         let produto = this.LerDados() 
         if (this.Validar(produto)== true){
             this.Salvar(produto)
@@ -14,8 +14,8 @@ class Produto {
         let produto = {}
         
         produto.id = this.id
-        produto.nomeProduto = document.getElementById('pdnome').value
-        produto.nomeProduto = document.getElementById('pdpreco').value
+        produto.nomeProduto = document.getElementById('pdnome').value;
+        produto.precoProduto = document.getElementById('pdpreco').value;
 
         return produto
     }
@@ -39,10 +39,9 @@ class Produto {
         this.id++;
     }
     Listar(){
-        let tbody = document.getElementById(tbody)
-        tbody.innerText = ''
-        
-        for(let i = 0; i < this.arrayProdutos.lenght; i++ ) {
+        let tbody = document.querySelector(".tbody");
+        tbody.innerHTML = '';
+        for(let i = 0; i < this.arrayProdutos.length; i++ ) {
 
             let tr = tbody.insertRow();
 
@@ -51,14 +50,15 @@ class Produto {
             let td_preco = tr.insertCell();
             let td_del = tr.insertCell();
 
-            this.id.innerText = this.arrayProdutos[i].id;
-            this.nome.innerText = this.arrayProdutos[i].nomeProduto;
-            this.preco.innerText = this.arrayProdutos[i].precoProduto;
-            this.del.innerText = this.arrayProdutos[i].del;
+            td_id.innerHTML = this.arrayProdutos[i].id;
+            td_nome.innerHTML = this.arrayProdutos[i].nomeProduto;
+            td_preco.innerHTML = this.arrayProdutos[i].precoProduto;
+            //td_del.innerHTML = this.arrayProdutos[i].del;
 
             let imagem = document.createElement('img');
             imagem.src = 'delete.svg';
-            td_del.appendChild(imagem)
+            imagem.setAttribute("onclick", `produto.Deletar(${this.arrayProdutos[i].id})`);
+            td_del.appendChild(imagem);
         }
         
     }
@@ -67,17 +67,28 @@ class Produto {
         document.getElementById('pdpreco').value = ''
     }
     Deletar (id) {
-        let tbody = document.getElementById('tdody')
-        for (i = 0; i < this.arrayProdutos.length; i++ ) {
+        for (let i = 0; i < this.arrayProdutos.length; i++ ) {
             if(this.arrayProdutos[i].id == id) {
                 this.arrayProdutos.splice(i, 1)
-                tbody.deleteRow(i)
             }
         }
+        this.Listar()
+        if (this.arrayProdutos.length == 0){
+            let tbody = document.querySelector(".tbody");
+            tbody.innerHTML = '';
+            let tr = tbody.insertRow();
+            let td_id = tr.insertCell();
+            let td_nome = tr.insertCell();
+            let td_preco = tr.insertCell();
+            let td_del = tr.insertCell();
+            td_id.innerHTML = 0;
+            td_nome.innerHTML = 0;
+            td_preco.innerHTML = 0;
+            let imagem = document.createElement('img');
+            imagem.src = "delete.svg"
+            td_del.appendChild(imagem);
+        }
+        
     }
 }
 var produto = new Produto()
-let imagem = document.createElement('img')
-            imagem.src = 'Img.Delete.png'
-            imagem.setAttribute("onclick", "produto.Deletar("+this.arrayProdutos[i].id+")")
-            td_del.appendChild(imagem)
